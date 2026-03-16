@@ -1,49 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Custom Network: BlockDAG</title>
+</head>
+<body>
+    <h1>Custom Network Switcher</h1>
+    <button id="addBlockDAG">Add BlockDAG to Wallet</button>
 
+    <script>
+        const btn = document.getElementById('addBlockDAG');
 
-
-// GitHub App: "Custom Network" - Updated BlockDAG Mainnet Configuration
-// Verified as of March 15, 2026
-
-
-const bdagMainnet = {
-  chainId: '0x57C', // Hexadecimal for 1404
-  chainName: 'BlockDAG Mainnet',
-  nativeCurrency: {
-    name: 'BlockDAG',
-    symbol: 'BDAG',
-    decimals: 18
-  },
-  rpcUrls: ['https://rpc.bdagscan.com/'],
-  blockExplorerUrls: ['https://bdagscan.com/']
-};
-
-async function syncBlockDAGNetwork() {
-  if (window.ethereum) {
-    try {
-      // Attempt to switch to the BlockDAG network
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: bdagMainnet.chainId }],
-      });
-      console.log("Successfully switched to BlockDAG Mainnet.");
-    } catch (switchError) {
-      // If the network is not added to the wallet, add it
-      if (switchError.code === 4902) {
-        try {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [bdagMainnet],
-          });
-          console.log("BlockDAG Mainnet added and synchronized.");
-        } catch (addError) {
-          console.error("User rejected network addition:", addError);
-        }
-      }
-    }
-  } else {
-    alert("Web3 provider not detected. Please ensure your wallet is active.");
-  }
-}
+        btn.addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [{
+                            chainId: '0x57C', // 1404 in Hex
+                            chainName: 'BlockDAG Mainnet',
+                            nativeCurrency: {
+                                name: 'BlockDAG',
+                                symbol: 'BDAG',
+                                decimals: 18
+                            },
+                            rpcUrls: ['https://rpc.bdagscan.com'],
+                            blockExplorerUrls: ['https://bdagscan.com']
+                        }]
+                    });
+                } catch (error) {
+                    console.error("User rejected the request or error occurred:", error);
+                }
+            } else {
+                alert("Please install a Web3 wallet (Base/Coinbase/MetaMask) to use this app.");
+            }
+        });
+    </script>
+</body>
+</html>
 
 
 
