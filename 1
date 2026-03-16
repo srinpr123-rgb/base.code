@@ -1,44 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Custom Network: BlockDAG</title>
-</head>
-<body>
-    <h1>Custom Network Switcher</h1>
-    <button id="addBlockDAG">Add BlockDAG to Wallet</button>
-
-    <script>
-        const btn = document.getElementById('addBlockDAG');
-
-        btn.addEventListener('click', async () => {
-            if (window.ethereum) {
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [{
-                            chainId: '0x57C', // 1404 in Hex
-                            chainName: 'BlockDAG Mainnet',
-                            nativeCurrency: {
-                                name: 'BlockDAG',
-                                symbol: 'BDAG',
-                                decimals: 18
-                            },
-                            rpcUrls: ['https://rpc.bdagscan.com'],
-                            blockExplorerUrls: ['https://bdagscan.com']
-                        }]
-                    });
-                } catch (error) {
-                    console.error("User rejected the request or error occurred:", error);
-                }
-            } else {
-                alert("Please install a Web3 wallet (Base/Coinbase/MetaMask) to use this app.");
-            }
-        });
-    </script>
-</body>
-</html>
 
 
 
 
 
+
+
+await window.ethereum.request({
+    method: 'wallet_addEthereumChain',
+    params: [{
+        chainId: '0x57C',
+        chainName: 'BlockDAG Mainnet',
+        nativeCurrency: {
+            name: 'BlockDAG',
+            symbol: 'BDAG',
+            decimals: 18
+        },
+        rpcUrls: ['https://rpc.bdagscan.com'],
+        blockExplorerUrls: ['https://bdagscan.com']
+    }]
+});
