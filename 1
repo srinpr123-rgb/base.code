@@ -2,24 +2,36 @@
 
 
 
-await window.ethereum.request({
-    method: 'wallet_addEthereumChain',
-    params: [{
-        chainId: '0x57C',
+async function registerNetwork() {
+  const provider = window.ethereum;
+
+  if (!provider) {
+    alert("Please install a Web3 wallet like MetaMask.");
+    return;
+  }
+
+  try {
+    await provider.request({
+      method: 'wallet_addEthereumChain',
+      params: [{
+        chainId: '0x57C', 
         chainName: 'BlockDAG Mainnet',
         nativeCurrency: {
-            name: 'BlockDAG',
-            symbol: 'BDAG',
-            decimals: 18
+          name: 'BlockDAG',
+          symbol: 'BDAG',
+          decimals: 18
         },
         rpcUrls: ['https://rpc.bdagscan.com'],
         blockExplorerUrls: ['https://bdagscan.com']
-    }]
-});
-
-
-
-await window.ethereum.request({
-  method: 'wallet_switchEthereumChain',
-  params: [{ chainId: '0x57C' }]
-});
+      }]
+    });
+  } catch (error) {
+    if (error.code === 4001) {
+      console.log("User rejected the request.");
+    } else if (error.code === -32602) {
+      console.error("Invalid parameters. Check your Hex ChainID or URLs.");
+    } else {
+      console.error("Request Error:", error.message);
+    }
+  }
+}
