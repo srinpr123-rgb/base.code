@@ -2,19 +2,17 @@
 
 
 
-async function registerNetwork() {
-  const provider = window.ethereum;
-
-  if (!provider) {
-    alert("Please install a Web3 wallet like MetaMask.");
+const addBlockDAGNetwork = async () => {
+  if (!window.ethereum) {
+    console.error("Metamask not detected");
     return;
   }
 
   try {
-    await provider.request({
+    await window.ethereum.request({
       method: 'wallet_addEthereumChain',
       params: [{
-        chainId: '0x57C', 
+        chainId: '0x57C',
         chainName: 'BlockDAG Mainnet',
         nativeCurrency: {
           name: 'BlockDAG',
@@ -26,12 +24,8 @@ async function registerNetwork() {
       }]
     });
   } catch (error) {
-    if (error.code === 4001) {
-      console.log("User rejected the request.");
-    } else if (error.code === -32602) {
-      console.error("Invalid parameters. Check your Hex ChainID or URLs.");
-    } else {
-      console.error("Request Error:", error.message);
-    }
+    // Handle user rejection or other errors
+    console.error("User rejected the request or an error occurred:", error);
   }
-}
+};
+
